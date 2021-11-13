@@ -40,6 +40,9 @@ hackEDbetaButtonState = aio.receive(hackEDbetaButtonFeed.key)
 buttonState = hackEDbetaButtonState.value
 print("Initial HackEDbeta button state : %s" % (buttonState) )
 
+#
+# Make a label that will reflect the current button state
+#
 on_off_label = Label(my_canvas, font=("Helvetica", 20))
 on_off_label.place(x = 180, y = 82)
 if buttonState == 'OFF':
@@ -47,7 +50,10 @@ if buttonState == 'OFF':
 else:
     on_off_label.config(bg = '#000FFF000', text = " ON")
 
+#
+# Make a method that repeats itself to periodically 
 # check the MQTT feed for an update
+#
 def checkFeed():
     global buttonState
     print(time.asctime()+'  checking feed...')
@@ -61,5 +67,8 @@ def checkFeed():
             on_off_label.config(bg = '#FFF000000', text = "OFF")
     ws.after(1000, checkFeed)
 
+#
+# Run forever...
+#
 ws.after(1000, checkFeed)
 ws.mainloop()
